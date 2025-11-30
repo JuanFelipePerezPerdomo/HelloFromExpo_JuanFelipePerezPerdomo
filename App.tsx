@@ -8,12 +8,12 @@ export default function App() {
 
   const [name, setName] = useState("");
   const charLimit = 20;
-  const [message, setMessage] = ("Hola ${name}");
 
-  const handleTextChange = (inputText) => {
-    setName(inputText);
+  const isButtonDisabled = name.trim().length === 0;
+
+  const handleNameChange = (name : string) => {
+    setName(name);
   }
-
   const textInputStyle = [
     styles.input,
     {
@@ -21,20 +21,20 @@ export default function App() {
     }
   ];
 
-  useEffect
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto"/>
-      <Text style={styles.title}>Saludador Expo</Text>
-      <View style={styles.row}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Saludador Expo</Text>
+        <View style={styles.row}>
         <Pressable
         style={({ pressed }) => [
           styles.button,
           { backgroundColor: pressed ? '#D2E6FF' : '#005DE9' },
-          name.trim().length === 0 && styles.buttonDisabled
+          isButtonDisabled && styles.buttonDisabled
         ]}
-        disabled={name.trim().length === 0 }
+        disabled={ isButtonDisabled}
         onPress={() => alert('¡Botón presionado!')}>
           <Text style={styles.buttonText}>Saludar</Text>
         </Pressable>
@@ -42,10 +42,16 @@ export default function App() {
           maxLength={charLimit}
           style={textInputStyle}
           value={name}
-          onChangeText={handleTextChange}
+          onChangeText={handleNameChange}
           placeholder='Introduce Tu Nombre'
         />
       </View>
+      <Text style={styles.counter}>
+        {name.length} / {charLimit}
+      </Text>
+      </View>
+      
+      
     </SafeAreaView>
   );
 }
@@ -54,13 +60,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
   row: {
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'space-between'
+  justifyContent: 'flex-start'
   },
   title: {
     color: '#000',
@@ -98,5 +107,11 @@ const styles = StyleSheet.create({
   error:{
     borderColor: '#f00',
     color: '#f00'
+  },
+  counter:{
+    fontSize: 12,
+      color: '#64748b',
+      textAlign: 'center',
+      marginBottom: 16,
   }
 });
